@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class InnerBoard : MonoBehaviour
 {
-    public CellButton[] cells;
+    public CellButton[] cells; // assigned in the prefab through inspector
 
     public void Init(int index)
     {

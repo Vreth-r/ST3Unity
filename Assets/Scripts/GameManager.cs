@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+// this code is ass because it was translated from my original java project and i just dont fucking care to make it better, bite my ass
 public class GameManager : MonoBehaviour
 {
     public InnerBoard[] innerBoards; // 9 InnerBoard GameObjects (in UI GridLayout)
@@ -20,6 +21,9 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
 
+    public Animator xAnimator;
+    public Animator oAnimator;
+
     void Awake() => Instance = this;
     void Start()
     {
@@ -37,6 +41,9 @@ public class GameManager : MonoBehaviour
             innerBoards[i] = ib.GetComponent<InnerBoard>();
             innerBoards[i].Init(i);
         }
+
+        //xAnimator.Play("enter");
+        //oAnimator.Play("enter");
     }
 
     public void OnCellPressed(int outer, int inner, CellButton cell)
@@ -134,8 +141,6 @@ public class GameManager : MonoBehaviour
         winColor.Toggle();
     }
 
-    public Marker GetCurrentTurnMarker() => turn.GetValue();
-    public Color GetCurrentColor() => turnColor.GetValue();
     public void QuitGame()
     {
         Application.Quit();
