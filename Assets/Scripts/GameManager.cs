@@ -24,6 +24,11 @@ public class GameManager : MonoBehaviour
     public Animator xAnimator;
     public Animator oAnimator;
 
+    public AudioSource buttonPressSound;
+    public AudioSource gameWinSound;
+    public AudioSource boardWinSound;
+    public AudioSource tieSound;
+
     void Awake() => Instance = this;
     void Start()
     {
@@ -41,9 +46,7 @@ public class GameManager : MonoBehaviour
             innerBoards[i] = ib.GetComponent<InnerBoard>();
             innerBoards[i].Init(i);
         }
-
-        //xAnimator.Play("enter");
-        //oAnimator.Play("enter");
+        xAnimator.Play("enter");
     }
 
     public void OnCellPressed(int outer, int inner, CellButton cell)
@@ -54,6 +57,15 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        buttonPressSound.Play();
+        if (turn.GetValue() == Marker.X)
+        {
+            xAnimator.Play("attack");
+        }
+        else
+        {
+            oAnimator.Play("attack");
+        }
         status = board.IsGameDone(outer);
         smString = $"{turn.GetInverseValue()}'s Turn";
         cell.SetText(turn.GetValue().ToString());
@@ -64,18 +76,37 @@ public class GameManager : MonoBehaviour
         {
             innerBoards[outer].SetAllCells(winColor.GetValue(), false);
             smString = $"{turn.GetValue()} wins a game!\n{turn.GetInverseValue()}'s Turn";
+            if (turn.GetValue() == Marker.X)
+            {
+                xAnimator.Play("smallvic");
+            }
+            else
+            {
+                oAnimator.Play("smallvic");
+            }
+            gameWinSound.Play();
         }
         else if (status == 2)
         {
             innerBoards[outer].SetAllCells(winColor.GetValue(), false);
             DisableNonWinningBoards();
             statusMessage.text = $"{turn.GetValue()} wins the board!";
+            if (turn.GetValue() == Marker.X)
+            {
+                xAnimator.Play("boardvic");
+            }
+            else
+            {
+                oAnimator.Play("boardvic");
+            }
+            boardWinSound.Play();
             return;
         }
         else if (status == 3)
         {
             innerBoards[outer].SetAllCells(Color.gray, false);
             smString = "Tie game!";
+            tieSound.Play();
         }
         else if (status == 4)
         {
@@ -84,6 +115,7 @@ public class GameManager : MonoBehaviour
                 board.SetAllCells(Color.gray, false);
             }
             statusMessage.text = "Tie Board!";
+            tieSound.Play();
             return;
         }
 
@@ -92,6 +124,14 @@ public class GameManager : MonoBehaviour
         SetPlayable(gameToPlay);
 
         toggleSwitches();
+        if (turn.GetValue() == Marker.X)
+        {
+            xAnimator.Play("enter");
+        }
+        else
+        {
+            oAnimator.Play("enter");
+        }
         statusMessage.text = smString;
     }
 
@@ -157,6 +197,7 @@ public class GameManager : MonoBehaviour
             Destroy(innerBoards[i].gameObject);
         }
         Start();
+        oAnimator.Play("idleoffscreen");
     }
 
 }

@@ -112,7 +112,8 @@ public class Board
         for (int i = 0; i < 3; i++)
         {
             int idx = i * 3;
-            if (line[idx] != Marker.B && line[idx] == line[idx + 1] && line[idx] == line[idx + 2])
+            if (line[idx] != Marker.B && line[idx] != Marker.N && line[idx] != Marker.T &&
+                line[idx] == line[idx + 1] && line[idx] == line[idx + 2])
             {
                 winningGames[0] = idx;
                 winningGames[1] = idx + 1;
@@ -127,7 +128,8 @@ public class Board
     {
         for (int i = 0; i < 3; i++)
         {
-            if (line[i] != Marker.B && line[i] == line[i + 3] && line[i] == line[i + 6])
+            if (line[i] != Marker.B && line[i] != Marker.N && line[i] != Marker.T &&
+                line[i] == line[i + 3] && line[i] == line[i + 6])
             {
                 winningGames[0] = i;
                 winningGames[1] = i + 3;
@@ -140,14 +142,16 @@ public class Board
 
     private Marker CheckDiagonals(Marker[] line)
     {
-        if (line[0] != Marker.B && line[0] == line[4] && line[0] == line[8])
+        if (line[0] != Marker.B && line[0] != Marker.N && line[0] != Marker.T &&
+        line[0] == line[4] && line[0] == line[8])
         {
             winningGames[0] = 0;
             winningGames[1] = 4;
             winningGames[2] = 8;
             return line[0];
         }
-        if (line[2] != Marker.B && line[2] == line[4] && line[2] == line[6])
+        if (line[2] != Marker.B && line[2] != Marker.N && line[2] != Marker.T &&
+            line[2] == line[4] && line[2] == line[6])
         {
             winningGames[0] = 2;
             winningGames[1] = 4;
